@@ -32,26 +32,26 @@ def full_search(term):
 
 
 def temp_reader(search_data):
-    if exists('/tmp'):
+    if exists("/tmp"):
         file = open(f"/tmp/{rand_string_gen(5)}.txt", "w+")
         file.write(wiki.page(search_data).content)
         name = file.name
         file.close()
         return name
-    elif exists('~/.wiki_cli'):
+    elif exists("~/.wiki_cli"):
         file = open(f"~/.wiki_cli/{rand_string_gen(5)}.txt", "w+")
         file.write(wiki.page(search_data).content)
         name = file.name
         file.close()
         return name
     else:
-        system('mkdir ~/.wiki_cli')
+        system("mkdir ~/.wiki_cli")
         file = open(f"~/.wiki_cli/{rand_string_gen(5)}.txt", "w+")
         file.write(wiki.page(search_data).content)
         name = file.name
         file.close()
         return name
-        
+
 
 def term_search(search_term, full_flag=False):
     searcher = wiki.search(search_term)

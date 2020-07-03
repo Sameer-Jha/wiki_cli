@@ -9,9 +9,9 @@ import argparse
 
 def rand_string_gen(len):
     sel_space = ascii_lowercase
-    name = ''
+    name = ""
     for i in range(len):
-        name = name+choice(sel_space)
+        name = name + choice(sel_space)
     return name
 
 
@@ -25,19 +25,18 @@ def search(term):
 def full_search(term):
     data_file = temp_reader(term)
     if exists("/usr/bin/less"):
-        system(f'less {data_file}')
+        system(f"less {data_file}")
     else:
-        system(f'cat {data_file}')
-    system(f'rm -rf {data_file}')
+        system(f"cat {data_file}")
+    system(f"rm -rf {data_file}")
 
 
 def temp_reader(search_data):
-    file = open(f'/tmp/{rand_string_gen(5)}.txt','w+')
+    file = open(f"/tmp/{rand_string_gen(5)}.txt", "w+")
     file.write(wiki.page(search_data).content)
     name = file.name
     file.close()
     return name
-
 
 
 def term_search(search_term, full_flag=False):
@@ -48,12 +47,12 @@ def term_search(search_term, full_flag=False):
             for i in range(s_len):
                 print(f"{i+1}: {searcher[i]}")
 
-            print('0: Exit Search')
+            print("0: Exit Search")
             f_term = int(input(f"select between 1 & {s_len}: ")) - 1
-            if f_term+1>=1 and f_term+1<=s_len:
+            if f_term + 1 >= 1 and f_term + 1 <= s_len:
                 search(searcher[f_term])
             else:
-                print('Exitting search')
+                print("Exitting search")
 
         elif s_len == 1:
             search(searcher[0])
@@ -65,12 +64,12 @@ def term_search(search_term, full_flag=False):
             for i in range(s_len):
                 print(f"{i+1}: {searcher[i]}")
 
-            print('0: Exit Search')
+            print("0: Exit Search")
             f_term = int(input(f"select between 1 & {s_len}: ")) - 1
-            if f_term+1>=1 and f_term+1<=s_len:
+            if f_term + 1 >= 1 and f_term + 1 <= s_len:
                 full_search(searcher[f_term])
             else:
-                print('Exitting search')
+                print("Exitting search")
 
         elif s_len == 1:
             full_search(searcher[0])

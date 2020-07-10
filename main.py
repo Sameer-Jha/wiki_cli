@@ -14,18 +14,40 @@ def rand_string_gen(len):
         name = name + choice(sel_space)
     return name
 
+
 def is_online():
-    status = system('ping -c 1 -q google.com > /dev/null 2>&1')
+    status = system("ping -c 1 -q google.com > /dev/null 2>&1")
     if status == 0:
         return True
     else:
         return False
 
-def search(term):
-    if exists("/usr/bin/less"):
-        system(f'echo "{wiki.summary(term)}" | less')
+def input_filter(data):
+    if data.isnumeric():
+        return int(data)
     else:
-        system(f'echo "{wiki.summary(term)}"')
+        return 1
+
+def search(term):
+    try:
+        if exists("/usr/bin/less"):
+            system(f'echo "{wiki.summary(term)}" | less')
+        else:
+            system(f'echo "{wiki.summary(term)}"')
+    except wiki.exceptions.DisambiguationError as e:
+        print("Wiki_tool is still confused./nDid you meant:\n")
+        terms = e.options
+        t_len = len(terms)
+        for i in range(t_len):
+            print(f"{i+1}: {terms[i]}")
+
+        print("0: Exit Search")
+        f_term = input_filter(input(f"select between 1 & {t_len}: ")) - 1
+        if f_term + 1 >= 1 and f_term + 1 <= t_len:
+            search(terms[f_term])
+        else:
+            print("Exitting search")
+    
 
 
 def full_search(term):
@@ -68,7 +90,7 @@ def term_search(search_term, full_flag=False):
                 print(f"{i+1}: {searcher[i]}")
 
             print("0: Exit Search")
-            f_term = int(input(f"select between 1 & {s_len}: ")) - 1
+            f_term = input_filter(input(f"select between 1 & {s_len}: ")) - 1
             if f_term + 1 >= 1 and f_term + 1 <= s_len:
                 search(searcher[f_term])
             else:
@@ -85,7 +107,7 @@ def term_search(search_term, full_flag=False):
                 print(f"{i+1}: {searcher[i]}")
 
             print("0: Exit Search")
-            f_term = int(input(f"select between 1 & {s_len}: ")) - 1
+            f_term = input_filter(input(f"select between 1 & {s_len}: ")) - 1
             if f_term + 1 >= 1 and f_term + 1 <= s_len:
                 full_search(searcher[f_term])
             else:
@@ -116,14 +138,17 @@ if __name__ == "__main__":
     )
     args = argparser.parse_args()
 
-    if(is_online()):
+    if is_online():
         if args.full and args.search:
             term_search(args.search, True)
         elif args.search:
             term_search(args.search, False)
         else:
-            while True:
-                search_term = input("What do you want to search : ")
-                term_search(search_term)
+            try:
+                while True:
+                    search_term = input("What do you want to search : ")
+                    term_search(search_term)
+            except KeyboardInterrupt:
+                print('\nExitting')
     else:
-        print('System is offline')
+        print("System is offline")

@@ -14,6 +14,12 @@ def rand_string_gen(len):
         name = name + choice(sel_space)
     return name
 
+def is_online():
+    status = system('ping -c 1 -q google.com > /dev/null 2>&1')
+    if status == 0:
+        return True
+    else:
+        return False
 
 def search(term):
     if exists("/usr/bin/less"):
@@ -110,11 +116,14 @@ if __name__ == "__main__":
     )
     args = argparser.parse_args()
 
-    if args.full and args.search:
-        term_search(args.search, True)
-    elif args.search:
-        term_search(args.search, False)
+    if(is_online()):
+        if args.full and args.search:
+            term_search(args.search, True)
+        elif args.search:
+            term_search(args.search, False)
+        else:
+            while True:
+                search_term = input("What do you want to search : ")
+                term_search(search_term)
     else:
-        while True:
-            search_term = input("What do you want to search : ")
-            term_search(search_term)
+        print('System is offline')

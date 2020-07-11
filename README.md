@@ -40,8 +40,11 @@ This tool is made for linux operating system as of now, Python 3.7+ and Pip requ
 `wiki [-h] [-s SEARCH] [-F] [-i]`
 
 > **optional arguments**:
->   **-h, --help**            show this help message and exit
->   **-s SEARCH, --search SEARCH**
->                         pass term for searching wikipedia
->   **-F, --full**            output all the pagedata from wikipedia
->   **-i, --interactive**     Run the tool interactively(CTRL+C to quit)
+> **-h, --help**            show this help message and exit
+>
+> **-s SEARCH, --search SEARCH**
+>                      pass term for searching wikipedia
+>
+> **-F, --full**            output all the pagedata from wikipedia
+>
+> **-i, --interactive**     Run the tool interactively(CTRL+C to quit)
